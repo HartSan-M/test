@@ -1,0 +1,30 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local teleportPosition = Vector3.new(28.88815689086914, -3.9150991439819336, 87.30551147460938)
+local teleportDuration = 0.1 -- 0.1 seconds
+
+-- Function to teleport the player
+local function teleportPlayerTemporarily()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        -- Save the current position
+        local originalPosition = humanoidRootPart.Position
+
+        -- Teleport to the specified position
+        humanoidRootPart.CFrame = CFrame.new(teleportPosition)
+
+        -- Wait for the specified duration
+        task.wait(teleportDuration)
+
+        -- Teleport back to the original position
+        humanoidRootPart.CFrame = CFrame.new(originalPosition)
+    else
+        warn("HumanoidRootPart not found!")
+    end
+end
+
+-- Call the function when needed
+teleportPlayerTemporarily()
