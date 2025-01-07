@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
 local teleportPosition = Vector3.new(28.88815689086914, -3.9150991439819336, 87.30551147460938)
-local teleportDuration = 1 -- 0.1 seconds
+local teleportDuration = 4 -- 0.1 seconds
 
 -- Function to teleport the player temporarily and fire the remote call
 local function teleportAndFireRemote()
