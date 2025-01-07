@@ -24,6 +24,7 @@ local function teleportAndFireRemote()
             [3] = "C4"
         }
         local remoteFunction = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Functions"):WaitForChild("Shop")
+        wait(0.2)
         remoteFunction:InvokeServer(unpack(args))
 
         -- Wait for the specified duration
