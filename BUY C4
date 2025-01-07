@@ -1,11 +1,12 @@
 local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local player = Players.LocalPlayer
 local teleportPosition = Vector3.new(28.88815689086914, -3.9150991439819336, 87.30551147460938)
 local teleportDuration = 0.1 -- 0.1 seconds
 
--- Function to teleport the player
-local function teleportPlayerTemporarily()
+-- Function to teleport the player temporarily and fire the remote call
+local function teleportAndFireRemote()
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 
@@ -15,6 +16,15 @@ local function teleportPlayerTemporarily()
 
         -- Teleport to the specified position
         humanoidRootPart.CFrame = CFrame.new(teleportPosition)
+
+        -- Fire the remote event
+        local args = {
+            [1] = "Buy",
+            [2] = "Rent",
+            [3] = "C4"
+        }
+        local remoteFunction = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Functions"):WaitForChild("Shop")
+        remoteFunction:InvokeServer(unpack(args))
 
         -- Wait for the specified duration
         task.wait(teleportDuration)
@@ -27,4 +37,4 @@ local function teleportPlayerTemporarily()
 end
 
 -- Call the function when needed
-teleportPlayerTemporarily()
+teleportAndFireRemote()
