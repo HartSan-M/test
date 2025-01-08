@@ -1,0 +1,127 @@
+-- Function to safely get an object from a path without using FindFirstChild or WaitForChild
+local function safeGetObject(parent, path)
+    local success, result = pcall(function()
+        return parent[path]
+    end)
+    return success and result or nil
+end
+
+-- Initialize lists to store all found objects
+local allPipes = {}
+local allPowerBoxGates = {}
+local allPowerBoxTurrets = {}
+
+-- Function to handle GasPipe event
+local function handleGasPipe(gasPipe)
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6261"
+            },
+            [2] = {
+                [1] = gasPipe,  -- Use the GasPipe found here
+                [2] = "DamageGasPipe",
+                [8] = os.clock()  -- You can adjust this timestamp value as needed
+            },
+            [3] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+            },
+            [4] = {
+                [1] = gasPipe,  -- Use the GasPipe found here
+                [2] = "Melee2"
+            }
+        }
+    }
+
+    -- Fire the event for this GasPipe
+    game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+end
+
+-- Function to handle PowerBoxGate event
+local function handlePowerBoxGate(powerBoxGate)
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6274"
+            },
+            [2] = {
+                [1] = powerBoxGate,  -- Use the PowerBoxGate found here
+                [2] = "DamagePowerBox",
+                [8] = os.clock()  -- Adjust this timestamp as needed
+            },
+            [3] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+            },
+            [4] = {
+                [1] = powerBoxGate,  -- Use the PowerBoxGate found here
+                [2] = "Melee2"
+            }
+        }
+    }
+
+    -- Fire the event for this PowerBoxGate
+    game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+end
+
+-- Function to handle PowerBoxTurret event
+local function handlePowerBoxTurret(powerBoxTurret)
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6274"
+            },
+            [2] = {
+                [1] = powerBoxTurret,
+                [2] = "DamagePowerBox",
+                [8] = os.clock()  -- Adjust this timestamp as needed
+            },
+            [3] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+            },
+            [4] = {
+                [1] = powerBoxTurret,
+                [2] = "Melee2"
+            }
+        }
+    }
+
+    -- Fire the event for this PowerBoxTurret
+    game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+end
+
+-- Iterate through all descendants of Workspace to handle each type of model
+for _, descendant in ipairs(workspace:GetDescendants()) do
+    -- Handle GasPipe
+    if descendant:IsA("Model") and descendant.Name == "GasPipe" then
+        table.insert(allPipes, descendant)
+        print("Found GasPipe at path:", descendant:GetFullName())
+        handleGasPipe(descendant)
+    -- Handle PowerBoxGate
+    elseif descendant:IsA("Model") and descendant.Name == "PowerBoxGate" then
+        table.insert(allPowerBoxGates, descendant)
+        print("Found PowerBoxGate at path:", descendant:GetFullName())
+        handlePowerBoxGate(descendant)
+    -- Handle PowerBoxTurret
+    elseif descendant:IsA("Model") and descendant.Name == "PowerBoxTurret" then
+        table.insert(allPowerBoxTurrets, descendant)
+        print("Found PowerBoxTurret at path:", descendant:GetFullName())
+        handlePowerBoxTurret(descendant)
+    end
+end
+
+-- Print all found objects for debugging
+for _, pipe in ipairs(allPipes) do
+    print("GasPipe:", pipe.Name)
+end
+for _, powerBoxGate in ipairs(allPowerBoxGates) do
+    print("PowerBoxGate:", powerBoxGate.Name)
+end
+for _, powerBoxTurret in ipairs(allPowerBoxTurrets) do
+    print("PowerBoxTurret:", powerBoxTurret.Name)
+end
