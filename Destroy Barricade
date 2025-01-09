@@ -1,0 +1,42 @@
+-- Table to store all found "DestroyableBarricade" objects
+local destroyableBarricades = {}
+
+-- Loop through all descendants of the workspace
+for _, descendant in ipairs(workspace:GetDescendants()) do
+    -- Check if the object's name is "DestroyableBarricade"
+    if descendant.Name == "DestroyableBarricade" then
+        table.insert(destroyableBarricades, descendant)
+    end
+end
+
+-- Print all found "DestroyableBarricade" objects
+for _, barricade in ipairs(destroyableBarricades) do
+    print("Found DestroyableBarricade at:", barricade:GetFullName())
+end
+
+-- Example usage: FireServer for all found barricades
+for _, barricade in ipairs(destroyableBarricades) do
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6288"
+            },
+            [2] = {
+                [1] = barricade,
+                [2] = "DamageBarricade",
+                [8] = 1736463650.3474572
+            },
+            [3] = {
+                [1] = "\3",
+                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+            },
+            [4] = {
+                [1] = barricade,
+                [2] = "Melee2"
+            }
+        }
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+end
