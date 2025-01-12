@@ -29,7 +29,7 @@ local function teleportToBrokenParts(player)
                             wait(12)
                         else
                             -- Default wait time for other models
-                            wait(5)
+                            wait(3.5)
                         end
                     else
                         print("No position found for model: " .. parentModel:GetFullName())
