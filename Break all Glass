@@ -1,3 +1,6 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
 -- Define the sectors to be checked
 local sectors = {
     "PatientHousing",
@@ -14,14 +17,14 @@ for _, sectorName in pairs(sectors) do
     for _, object in pairs(sector:GetDescendants()) do
         if object:IsA("BasePart") and object.Name == "DestructableGlass" then
             -- If it's a DestructableGlass, add its position to the table and fire the event
-            print("Found glass at position:", object.Position)
+            -- print("Found glass at position:", object.Position) -- Removed for clarity
 
             -- Prepare arguments for firing the event
             local args = {
                 [1] = {
                     [1] = {
                         [1] = "\3",
-                        [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6305"
+                        [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6305"
                     },
                     [2] = {
                         [1] = object, -- Glass object
@@ -31,7 +34,7 @@ for _, sectorName in pairs(sectors) do
                     },
                     [3] = {
                         [1] = "\3",
-                        [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+                        [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6425"
                     },
                     [4] = {
                         [1] = workspace:WaitForChild("Facility"):WaitForChild("Sectors"):WaitForChild(sectorName):WaitForChild("Interactions"):WaitForChild("Glass"):WaitForChild("StreamingContainer"),
