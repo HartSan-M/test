@@ -16,16 +16,17 @@ while _G.RepairWalls do
         -- Get the sector
         local sector = workspace:WaitForChild("Facility"):WaitForChild("Sectors"):WaitForChild(sectorName)
 
-        -- Traverse the folder path to locate the wall
+        -- Get the specific wall folder based on the path
         local currentFolder = sector
         for _, folderName in ipairs(wallPath) do
             currentFolder = currentFolder:WaitForChild(folderName)
         end
 
-        -- Locate the wall and its "Boundry"
+        -- Get the Wall instance
         local wall = currentFolder:WaitForChild("Scripted"):WaitForChild("Wall"):WaitForChild("Wall")
-        local boundary = wall:FindFirstChild("Boundry")
 
+        -- Check if the Boundary exists
+        local boundary = wall:FindFirstChild("Boundry")
         if boundary then
             -- Prepare the arguments for the FireServer call
             local args = {
@@ -37,15 +38,9 @@ while _G.RepairWalls do
             game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
                 :WaitForChild("Events"):WaitForChild("Repair")
                 :FireServer(unpack(args))
-
-            -- Log the repaired wall
-            print("Repaired wall in sector:", sectorName)
-        else
-            -- Warn if no Boundary is found for the Wall
-            warn("No Boundary found for wall in sector:", sectorName)
         end
     end
 
-    -- Wait to prevent overloading the loop
+    -- Wait for a short time to prevent overloading the loop
     wait(0.1)
 end
