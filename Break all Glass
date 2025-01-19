@@ -1,0 +1,47 @@
+-- Define the sectors to be checked
+local sectors = {
+    "PatientHousing",
+    "Sector 1",
+    "Sector 2"
+}
+
+-- Iterate through each sector
+for _, sectorName in pairs(sectors) do
+    -- Get the sector (PatientHousing, Sector 1, Sector 2, etc.)
+    local sector = workspace:WaitForChild("Facility"):WaitForChild("Sectors"):WaitForChild(sectorName)
+
+    -- Iterate through all the children in the sector to find the glass objects
+    for _, object in pairs(sector:GetDescendants()) do
+        if object:IsA("BasePart") and object.Name == "DestructableGlass" then
+            -- If it's a DestructableGlass, add its position to the table and fire the event
+            print("Found glass at position:", object.Position)
+
+            -- Prepare arguments for firing the event
+            local args = {
+                [1] = {
+                    [1] = {
+                        [1] = "\3",
+                        [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6305"
+                    },
+                    [2] = {
+                        [1] = object, -- Glass object
+                        [2] = "DamageBreakableGlass", -- Action type (adjust as needed)
+                        [5] = object.Position, -- Position of the glass
+                        [8] = tick() -- Using the current time as an identifier (adjust if needed)
+                    },
+                    [3] = {
+                        [1] = "\3",
+                        [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+                    },
+                    [4] = {
+                        [1] = workspace:WaitForChild("Facility"):WaitForChild("Sectors"):WaitForChild(sectorName):WaitForChild("Interactions"):WaitForChild("Glass"):WaitForChild("StreamingContainer"),
+                        [2] = "Melee2" -- Action type (adjust as needed)
+                    }
+                }
+            }
+
+            -- Fire the event for each glass in the current sector
+            game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+        end
+    end
+end
