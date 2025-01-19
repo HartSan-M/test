@@ -1,0 +1,47 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+-- Function to safely get an object from a path without using FindFirstChild or WaitForChild
+local function safeGetObject(parent, path)
+    local success, result = pcall(function()
+        return parent[path]
+    end)
+    return success and result or nil
+end
+
+-- Iterate through all descendants of Workspace
+for _, descendant in ipairs(workspace:GetDescendants()) do
+    -- Check if the descendant is a BoolValue named "Broken"
+    if descendant:IsA("BoolValue") and descendant.Name == "Broken" then
+        -- Get the parent of the BoolValue
+        local parent = descendant.Parent
+        -- Check if the parent is a "GasPipe" model
+        if parent:IsA("Model") and parent.Name == "GasPipe" then
+            -- Construct the arguments for the event based on the found GasPipe
+            local args = {
+                [1] = {
+                    [1] = {
+                        [1] = "\3",
+                        [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6410"
+                    },
+                    [2] = {
+                        [1] = parent,  -- Use the found GasPipe
+                        [2] = "DamageGasPipe",
+                        [8] = os.clock()  -- Use the current timestamp
+                    },
+                    [3] = {
+                        [1] = "\3",
+                        [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6425"
+                    },
+                    [4] = {
+                        [1] = parent,  -- Use the found GasPipe
+                        [2] = "Melee2"
+                    }
+                }
+            }
+
+            -- Fire the event for this GasPipe
+            game:GetService("ReplicatedStorage"):WaitForChild("DataRemoteEvent"):FireServer(unpack(args))
+        end
+    end
+end
