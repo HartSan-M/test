@@ -47,12 +47,6 @@ while _G.Pipe do
                         game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
                             :WaitForChild("Events"):WaitForChild("Repair")
                             :FireServer(unpack(args))
-
-                        -- Output the name of the repaired GasPipe
-                        print("Repaired:", gasPipe:GetFullName())
-                    else
-                        -- Warn if no Boundary is found for the GasPipe
-                        warn("No Boundary found for:", gasPipe:GetFullName())
                     end
                 end
             end
