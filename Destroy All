@@ -1,3 +1,6 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
 -- Function to safely get an object from a path without using FindFirstChild or WaitForChild
 local function safeGetObject(parent, path)
     local success, result = pcall(function()
@@ -17,7 +20,7 @@ local function handleGasPipe(gasPipe)
         [1] = {
             [1] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6261"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6261"
             },
             [2] = {
                 [1] = gasPipe,  -- Use the GasPipe found here
@@ -26,7 +29,7 @@ local function handleGasPipe(gasPipe)
             },
             [3] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6425"
             },
             [4] = {
                 [1] = gasPipe,  -- Use the GasPipe found here
@@ -45,7 +48,7 @@ local function handlePowerBoxGate(powerBoxGate)
         [1] = {
             [1] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6274"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6274"
             },
             [2] = {
                 [1] = powerBoxGate,  -- Use the PowerBoxGate found here
@@ -54,7 +57,7 @@ local function handlePowerBoxGate(powerBoxGate)
             },
             [3] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6425"
             },
             [4] = {
                 [1] = powerBoxGate,  -- Use the PowerBoxGate found here
@@ -73,7 +76,7 @@ local function handlePowerBoxTurret(powerBoxTurret)
         [1] = {
             [1] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6274"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6274"
             },
             [2] = {
                 [1] = powerBoxTurret,
@@ -82,7 +85,7 @@ local function handlePowerBoxTurret(powerBoxTurret)
             },
             [3] = {
                 [1] = "\3",
-                [2] = "Players.hofowoulored.PlayerScripts.ClientGunHandler:6425"
+                [2] = "Players." .. localPlayer.Name .. ".PlayerScripts.ClientGunHandler:6425"
             },
             [4] = {
                 [1] = powerBoxTurret,
@@ -100,28 +103,14 @@ for _, descendant in ipairs(workspace:GetDescendants()) do
     -- Handle GasPipe
     if descendant:IsA("Model") and descendant.Name == "GasPipe" then
         table.insert(allPipes, descendant)
-        print("Found GasPipe at path:", descendant:GetFullName())
         handleGasPipe(descendant)
     -- Handle PowerBoxGate
     elseif descendant:IsA("Model") and descendant.Name == "PowerBoxGate" then
         table.insert(allPowerBoxGates, descendant)
-        print("Found PowerBoxGate at path:", descendant:GetFullName())
         handlePowerBoxGate(descendant)
     -- Handle PowerBoxTurret
     elseif descendant:IsA("Model") and descendant.Name == "PowerBoxTurret" then
         table.insert(allPowerBoxTurrets, descendant)
-        print("Found PowerBoxTurret at path:", descendant:GetFullName())
         handlePowerBoxTurret(descendant)
     end
-end
-
--- Print all found objects for debugging
-for _, pipe in ipairs(allPipes) do
-    print("GasPipe:", pipe.Name)
-end
-for _, powerBoxGate in ipairs(allPowerBoxGates) do
-    print("PowerBoxGate:", powerBoxGate.Name)
-end
-for _, powerBoxTurret in ipairs(allPowerBoxTurrets) do
-    print("PowerBoxTurret:", powerBoxTurret.Name)
 end
